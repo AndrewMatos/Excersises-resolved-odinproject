@@ -1,7 +1,7 @@
 class Game
 
-	attr_reader :player, :table			
-
+	attr_accessor :player, :table			
+    
 	def initialize(player_name)
 	   if rand(2)==0
           n = "O"
@@ -15,7 +15,7 @@ class Game
 
 	end
 
-	private
+	#private
 
 	def start
 		 puts "you are #{@player.XorO}"
@@ -37,6 +37,69 @@ class Game
 		  winner
 	return nil
 	end
+
+
+	def play
+	     @table.each{|element|
+		  	puts "|#{element[0]},#{element[1]},#{element[2]}|"
+		  }		
+	     if @player.XorO =="O"
+	      puts " you are #{@player.XorO}, Choose where to put #{@player.XorO} "
+	      
+	      playplayer
+
+	      @table.each{|element|
+		  	puts "|#{element[0]},#{element[1]},#{element[2]}|"
+		  }	
+	      playpc
+	     else 
+	      playpc
+
+	      table.each{|element|
+		  	puts "|#{element[0]},#{element[1]},#{element[2]}|"
+		  }	
+
+		  puts " you are #{@player.XorO}, Choose where to put #{@player.XorO}"
+	      
+	      playplayer
+
+	     end
+	return nil
+	end
+
+
+	def playplayer
+		choice = gets.chomp.to_i
+		until @table[0].include?(choice)||@table[1].include?(choice)||@table[2].include?(choice) do
+		puts "that position doesn't exist or is already in use, write another position if you want to quit press ctrl+c"
+		choice = gets.chomp.to_i
+		end
+		@table= @table.map{|element| 
+			element = element.map{|element2|
+				if element2==choice
+				 element2 =@player.XorO	
+				end
+				element2
+			}
+		}	
+	end
+
+	def playpc
+		choice = rand(1..9)
+		until @table[0].include?(choice)||@table[1].include?(choice)||@table[2].include?(choice) do
+		choice = rand(1..9)
+		end
+		@table= @table.map{|element| 
+			element = element.map{|element2|
+				if element2==choice
+				 element2 = @pc.XorO
+				end
+				element2
+			}
+		}
+		puts "pc puts #{@pc.XorO} in position #{choice}"	
+	end
+
 
 	def winner
 		 if win(@player.XorO)
@@ -104,73 +167,11 @@ class Game
       end
     return n
 	end
-
-	def play
-	     @table.each{|element|
-		  	puts "|#{element[0]},#{element[1]},#{element[2]}|"
-		  }		
-	     if @player.XorO =="O"
-	      puts " you are #{@player.XorO}, Choose where to put #{@player.XorO} "
-	      
-	      playplayer
-
-	      @table.each{|element|
-		  	puts "|#{element[0]},#{element[1]},#{element[2]}|"
-		  }	
-	      playpc
-	     else 
-	      playpc
-
-	      table.each{|element|
-		  	puts "|#{element[0]},#{element[1]},#{element[2]}|"
-		  }	
-
-		  puts " you are #{@player.XorO}, Choose where to put #{@player.XorO}"
-	      
-	      playplayer
-
-	     end
-	return nil
-	end
-
 	
 
-
-	def playplayer
-		choice = gets.chomp.to_i
-		until @table[0].include?(choice)||@table[1].include?(choice)||@table[2].include?(choice) do
-		puts "that position doesn't exist or is already in use, write another position if you want to quit press ctrl+c"
-		choice = gets.chomp.to_i
-		end
-		@table= @table.map{|element| 
-			element = element.map{|element2|
-				if element2==choice
-				 element2 =@player.XorO	
-				end
-				element2
-			}
-		}	
-	end
-
-	def playpc
-		choice = rand(1..9)
-		until @table[0].include?(choice)||@table[1].include?(choice)||@table[2].include?(choice) do
-		choice = rand(1..9)
-		end
-		@table= @table.map{|element| 
-			element = element.map{|element2|
-				if element2==choice
-				 element2 = @pc.XorO
-				end
-				element2
-			}
-		}
-		puts "pc puts #{@pc.XorO} in position #{choice}"	
-	end
-
-	def table=(value)
-		@table=value
-	end
+	#def table=(value)
+	#	@table=value
+	#end
 
 	public
 
